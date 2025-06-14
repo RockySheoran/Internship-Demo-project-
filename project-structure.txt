@@ -1,0 +1,16 @@
+stayfinder/
+├── frontend/                 # Next.js Frontend Application
+│   ├── app/                 # Next.js App Router
+│   ├── components/          # Reusable UI Components
+│   ├── lib/                # Utilities and Configurations
+│   ├── public/             # Static Assets
+│   └── package.json        # Frontend Dependencies
+├── backend/                 # Node.js/Express Backend API
+│   ├── controllers/        # Route Controllers
+│   ├── middleware/         # Custom Middleware
+│   ├── models/            # MongoDB Models
+│   ├── routes/            # API Routes
+│   ├── utils/             # Utility Functions
+│   ├── uploads/           # File Upload Directory
+│   └── package.json       # Backend Dependencies
+└── README.md              # Project Documentation
