@@ -8,45 +8,38 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
-import { CalendarIcon, Search, X } from "lucide-react"
+import { CalendarIcon, Search, Users, MapPin } from "lucide-react"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
+import type { DateRange } from "react-day-picker"
 
-interface SearchBarProps {
-  onClose?: () => void
-}
-
-export function SearchBar({ onClose }: SearchBarProps) {
+export function SearchBar() {
   const router = useRouter()
   const [location, setLocation] = useState("")
   const [guests, setGuests] = useState("1")
-  const [date, setDate] = useState<Date>()
+  const [dateRange, setDateRange] = useState<DateRange | undefined>()
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Build query parameters
     const params = new URLSearchParams()
     if (location) params.append("location", location)
     if (guests) params.append("guests", guests)
-    if (date) params.append("date", format(date, "yyyy-MM-dd"))
+    if (dateRange?.from) params.append("checkIn", format(dateRange.from, "yyyy-MM-dd"))
+    if (dateRange?.to) params.append("checkOut", format(dateRange.to, "yyyy-MM-dd"))
 
-    // Navigate to listings page with search params
     router.push(`/listings?${params.toString()}`)
-
-    // Close search if provided
-    if (onClose) onClose()
   }
 
   return (
-    <form onSubmit={handleSearch} className="flex items-center w-full">
+    <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-2 w-full">
       <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           value={location}
           onChange={(e) => setLocation(e.target.value)}
           placeholder="Where are you going?"
-          className="pl-10 rounded-l-md rounded-r-none border-r-0"
+          className="pl-10 h-12 border-2 focus:border-blue-500"
         />
       </div>
 
@@ -55,38 +48,56 @@ export function SearchBar({ onClose }: SearchBarProps) {
           <Button
             variant="outline"
             className={cn(
-              "w-[180px] justify-start text-left font-normal rounded-none border-r-0",
-              !date && "text-muted-foreground",
+              "justify-start text-left font-normal h-12 border-2 min-w-[200px]",
+              !dateRange && "text-muted-foreground",
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {date ? format(date, "PPP") : <span>Pick a date</span>}
+            {dateRange?.from ? (
+              dateRange.to ? (
+                <>
+                  {format(dateRange.from, "LLL dd")} - {format(dateRange.to, "LLL dd")}
+                </>
+              ) : (
+                format(dateRange.from, "LLL dd, y")
+              )
+            ) : (
+              <span>Pick dates</span>
+            )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0">
-          <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            initialFocus
+            mode="range"
+            defaultMonth={dateRange?.from}
+            selected={dateRange}
+            onSelect={setDateRange}
+            numberOfMonths={2}
+            disabled={(date) => date < new Date()}
+          />
         </PopoverContent>
       </Popover>
 
-      <Input
-        type="number"
-        min="1"
-        value={guests}
-        onChange={(e) => setGuests(e.target.value)}
-        placeholder="Guests"
-        className="max-w-[80px] rounded-none border-r-0"
-      />
+      <div className="relative min-w-[120px]">
+        <Users className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          type="number"
+          min="1"
+          value={guests}
+          onChange={(e) => setGuests(e.target.value)}
+          placeholder="Guests"
+          className="pl-10 h-12 border-2 focus:border-blue-500"
+        />
+      </div>
 
-      <Button type="submit" className="rounded-l-none">
+      <Button
+        type="submit"
+        className="h-12 px-8 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+      >
+        <Search className="h-4 w-4 mr-2" />
         Search
       </Button>
-
-      {onClose && (
-        <Button type="button" variant="ghost" size="icon" className="ml-2" onClick={onClose}>
-          <X className="h-4 w-4" />
-          <span className="sr-only">Close search</span>
-        </Button>
-      )}
     </form>
   )
 }
