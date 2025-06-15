@@ -2,31 +2,62 @@ stayfinder/
 ├── frontend/                    # Next.js Frontend Application
 │   ├── app/                    # Next.js 14 App Router
 │   │   ├── (auth)/            # Auth route group
+│   │   │   ├── login/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── loading.tsx
+│   │   │   └── register/
+│   │   │       ├── page.tsx
+│   │   │       └── loading.tsx
 │   │   ├── (dashboard)/       # Dashboard route group
-│   │   ├── listings/          # Listings pages
-│   │   ├── bookings/          # Bookings pages
-│   │   ├── profile/           # User profile pages
-│   │   └── globals.css        # Global styles
-│   ├── components/            # Reusable UI Components
+│   │   │   ├── bookings/
+│   │   │   ├── favorites/
+│   │   │   ├── profile/
+│   │   │   └── settings/
+│   │   ├── (host)/           # Host route group
+│   │   │   ├── dashboard/
+│   │   │   ├── listings/
+│   │   │   ├── bookings/
+│   │   │   └── earnings/
+│   │   ├── listings/         # Public listings
+│   │   │   ├── [id]/
+│   │   │   │   └── page.tsx
+│   │   │   └── page.tsx
+│   │   ├── api/             # API routes
+│   │   │   ├── auth/
+│   │   │   ├── listings/
+│   │   │   └── bookings/
+│   │   ├── globals.css        # Global styles
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   ├── loading.tsx
+│   │   └── not-found.tsx
+│   ├── components/            # Reusable components
 │   │   ├── ui/               # shadcn/ui components
 │   │   ├── layout/           # Layout components
-│   │   ├── forms/            # Form components
 │   │   ├── sections/         # Page sections
+│   │   ├── forms/            # Form components
 │   │   └── providers/        # Context providers
 │   ├── lib/                  # Utilities and configurations
 │   ├── hooks/                # Custom React hooks
 │   ├── types/                # TypeScript type definitions
 │   ├── public/               # Static assets
-│   └── package.json          # Frontend dependencies
-├── backend/                   # Node.js/Express Backend API
-│   ├── controllers/          # Route controllers
-│   ├── middleware/           # Custom middleware
-│   ├── models/              # MongoDB models
-│   ├── routes/              # API routes
-│   ├── utils/               # Utility functions
-│   ├── config/              # Configuration files
-│   ├── uploads/             # File upload directory
-│   └── package.json         # Backend dependencies
-├── docker-compose.yml        # Docker configuration
-├── .env.example             # Environment variables template
-└── README.md               # Project documentation
+│   ├── package.json          # Frontend dependencies
+│   ├── next.config.js        # Next.js configuration
+│   ├── tailwind.config.js    # Tailwind CSS configuration
+│   └── tsconfig.json         # TypeScript configuration
+├── backend/                   # Node.js/Express Backend
+│   ├── src/
+│   │   ├── controllers/          # Route controllers
+│   │   ├── models/               # MongoDB models
+│   │   ├── routes/               # API routes
+│   │   ├── middleware/           # Custom middleware
+│   │   ├── utils/                # Utility functions
+│   │   ├── config/               # Configuration files
+│   │   └── services/             # Service functions
+│   ├── uploads/                 # File upload directory
+│   ├── package.json             # Backend dependencies
+│   ├── server.js                # Backend server entry point
+│   └── .env                     # Backend environment variables
+├── docker-compose.yml          # Docker configuration
+├── .env.example                # Environment variables template
+└── README.md                   # Project documentation
