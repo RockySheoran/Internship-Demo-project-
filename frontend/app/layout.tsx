@@ -4,7 +4,6 @@ import { Inter, Poppins } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/providers/theme-provider"
 import { AuthProvider } from "@/components/providers/auth-provider"
-import { NotificationProvider } from "@/components/providers/notification-provider"
 import { QueryProvider } from "@/components/providers/query-provider"
 import { Toaster } from "@/components/ui/toaster"
 import { cn } from "@/lib/utils"
@@ -25,17 +24,9 @@ export const metadata: Metadata = {
     default: "StayFinder | Find Your Perfect Stay Anywhere",
     template: "%s | StayFinder",
   },
-  description:
-    "Discover and book unique accommodations worldwide. From cozy apartments to luxury villas, find your perfect stay with StayFinder.",
-  keywords: ["accommodation", "booking", "travel", "vacation rental", "hotels", "apartments", "villas"],
-  authors: [{ name: "StayFinder Team", url: "https://stayfinder.com" }],
-  creator: "StayFinder",
-  publisher: "StayFinder",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
+  description: "Discover and book unique accommodations worldwide. From cozy apartments to luxury villas.",
+  keywords: ["accommodation", "booking", "travel", "vacation rental", "hotels"],
+  authors: [{ name: "StayFinder Team" }],
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   openGraph: {
     type: "website",
@@ -44,35 +35,10 @@ export const metadata: Metadata = {
     title: "StayFinder - Your Perfect Stay Awaits",
     description: "Discover and book unique accommodations worldwide",
     siteName: "StayFinder",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "StayFinder - Find Your Perfect Stay",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "StayFinder - Your Perfect Stay Awaits",
-    description: "Discover and book unique accommodations worldwide",
-    images: ["/og-image.jpg"],
-    creator: "@stayfinder",
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  verification: {
-    google: "your-google-verification-code",
   },
 }
 
@@ -84,13 +50,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn("min-h-screen bg-background font-sans antialiased", inter.variable, poppins.variable)}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <QueryProvider>
             <AuthProvider>
-              <NotificationProvider>
-                <div className="relative flex min-h-screen flex-col">{children}</div>
-                <Toaster />
-              </NotificationProvider>
+              <div className="relative flex min-h-screen flex-col">{children}</div>
+              <Toaster />
             </AuthProvider>
           </QueryProvider>
         </ThemeProvider>

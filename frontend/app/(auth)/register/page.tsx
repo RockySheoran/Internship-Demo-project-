@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -17,16 +18,11 @@ import { useAuth } from "@/components/providers/auth-provider"
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Github, Chrome, Check, Home, AlertCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-/**
- * Enhanced Registration Page Component
- * Professional account creation with advanced validation
- */
 export default function RegisterPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { register, isAuthenticated, loading: authLoading } = useAuth()
 
-  // Form state
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -42,21 +38,14 @@ export default function RegisterPage() {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [passwordStrength, setPasswordStrength] = useState(0)
 
-  // Redirect URL after registration
   const redirectTo = searchParams.get("redirect") || "/"
 
-  /**
-   * Redirect if already authenticated
-   */
   useEffect(() => {
     if (!authLoading && isAuthenticated) {
       router.push(redirectTo)
     }
   }, [isAuthenticated, authLoading, router, redirectTo])
 
-  /**
-   * Calculate password strength
-   */
   useEffect(() => {
     const calculateStrength = (password: string) => {
       let strength = 0
@@ -71,22 +60,14 @@ export default function RegisterPage() {
     setPasswordStrength(calculateStrength(formData.password))
   }, [formData.password])
 
-  /**
-   * Handle form input changes
-   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
-
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }))
     }
   }
 
-  /**
-   * Validate form data
-   */
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {}
 
@@ -124,16 +105,11 @@ export default function RegisterPage() {
     return Object.keys(newErrors).length === 0
   }
 
-  /**
-   * Handle form submission
-   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
     if (!validateForm()) return
 
     setIsLoading(true)
-
     try {
       const success = await register({
         name: formData.name.trim(),
@@ -153,9 +129,6 @@ export default function RegisterPage() {
     }
   }
 
-  /**
-   * Get password strength color and text
-   */
   const getPasswordStrengthInfo = () => {
     const strengthLevels = [
       { color: "bg-red-500", text: "Very Weak" },
@@ -205,8 +178,10 @@ export default function RegisterPage() {
                 <div className="text-2xl font-bold">24/7</div>
                 <div className="text-sm opacity-80">Support</div>
               </div>
-              <div className="text-2xl font-bold">Secure</div>
-              <div className="text-sm opacity-80">Platform</div>
+              <div>
+                <div className="text-2xl font-bold">Secure</div>
+                <div className="text-sm opacity-80">Platform</div>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -232,7 +207,6 @@ export default function RegisterPage() {
             </CardHeader>
 
             <CardContent className="space-y-6">
-              {/* Error Messages */}
               {errors.general && (
                 <Alert variant="destructive">
                   <AlertCircle className="h-4 w-4" />
@@ -265,9 +239,7 @@ export default function RegisterPage() {
                 </RadioGroup>
               </div>
 
-              {/* Registration Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Full Name Field */}
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-sm font-medium">
                     Full Name
@@ -288,7 +260,6 @@ export default function RegisterPage() {
                   {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
                 </div>
 
-                {/* Email Field */}
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-sm font-medium">
                     Email Address
@@ -309,7 +280,6 @@ export default function RegisterPage() {
                   {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
                 </div>
 
-                {/* Password Field */}
                 <div className="space-y-2">
                   <Label htmlFor="password" className="text-sm font-medium">
                     Password
@@ -335,7 +305,6 @@ export default function RegisterPage() {
                     </button>
                   </div>
 
-                  {/* Password Strength Indicator */}
                   {formData.password && (
                     <div className="space-y-2">
                       <div className="flex items-center space-x-2">
@@ -353,7 +322,6 @@ export default function RegisterPage() {
                   {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
                 </div>
 
-                {/* Confirm Password Field */}
                 <div className="space-y-2">
                   <Label htmlFor="confirmPassword" className="text-sm font-medium">
                     Confirm Password
@@ -384,7 +352,6 @@ export default function RegisterPage() {
                   {errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword}</p>}
                 </div>
 
-                {/* Terms and Newsletter */}
                 <div className="space-y-3">
                   <div className="flex items-start space-x-2">
                     <Checkbox
@@ -418,7 +385,6 @@ export default function RegisterPage() {
                   </div>
                 </div>
 
-                {/* Submit Button */}
                 <Button
                   type="submit"
                   className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium h-11"
@@ -438,7 +404,6 @@ export default function RegisterPage() {
                 </Button>
               </form>
 
-              {/* Social Registration */}
               <div className="space-y-3">
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">

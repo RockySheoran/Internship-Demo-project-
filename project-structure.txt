@@ -5,59 +5,87 @@ stayfinder/
 │   │   │   ├── login/
 │   │   │   │   ├── page.tsx
 │   │   │   │   └── loading.tsx
-│   │   │   └── register/
+│   │   │   ├── register/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── loading.tsx
+│   │   │   └── forgot-password/
+│   │   │       └── page.tsx
+│   │   ├── (dashboard)/       # Protected dashboard routes
+│   │   │   ├── profile/
+│   │   │   │   └── page.tsx
+│   │   │   ├── bookings/
+│   │   │   │   └── page.tsx
+│   │   │   ├── favorites/
+│   │   │   │   └── page.tsx
+│   │   │   └── settings/
+│   │   │       └── page.tsx
+│   │   ├── (host)/           # Host-only routes
+│   │   │   ├── dashboard/
+│   │   │   │   └── page.tsx
+│   │   │   ├── listings/
+│   │   │   │   ├── page.tsx
+│   │   │   │   ├── new/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── [id]/
+│   │   │   │       ├── page.tsx
+│   │   │   │       └── edit/
+│   │   │   │           └── page.tsx
+│   │   │   ├── bookings/
+│   │   │   │   └── page.tsx
+│   │   │   └── earnings/
+│   │   │       └── page.tsx
+│   │   ├── listings/         # Public listings
+│   │   │   ├── page.tsx
+│   │   │   ├── loading.tsx
+│   │   │   └── [id]/
 │   │   │       ├── page.tsx
 │   │   │       └── loading.tsx
-│   │   ├── (dashboard)/       # Dashboard route group
-│   │   │   ├── bookings/
-│   │   │   ├── favorites/
-│   │   │   ├── profile/
-│   │   │   └── settings/
-│   │   ├── (host)/           # Host route group
-│   │   │   ├── dashboard/
-│   │   │   ├── listings/
-│   │   │   ├── bookings/
-│   │   │   └── earnings/
-│   │   ├── listings/         # Public listings
-│   │   │   ├── [id]/
-│   │   │   │   └── page.tsx
-│   │   │   └── page.tsx
-│   │   ├── api/             # API routes
-│   │   │   ├── auth/
-│   │   │   ├── listings/
-│   │   │   └── bookings/
-│   │   ├── globals.css        # Global styles
+│   │   ├── api/             # API routes (for frontend-only features)
+│   │   │   └── upload/
+│   │   │       └── route.ts
+│   │   ├── globals.css
 │   │   ├── layout.tsx
 │   │   ├── page.tsx
 │   │   ├── loading.tsx
 │   │   └── not-found.tsx
-│   ├── components/            # Reusable components
-│   │   ├── ui/               # shadcn/ui components
+│   ├── components/            # All React components
+│   │   ├── ui/               # shadcn/ui base components
 │   │   ├── layout/           # Layout components
 │   │   ├── sections/         # Page sections
 │   │   ├── forms/            # Form components
+│   │   ├── cards/            # Card components
+│   │   ├── search/           # Search components
+│   │   ├── filters/          # Filter components
 │   │   └── providers/        # Context providers
 │   ├── lib/                  # Utilities and configurations
 │   ├── hooks/                # Custom React hooks
 │   ├── types/                # TypeScript type definitions
+│   ├── styles/               # Additional styles
 │   ├── public/               # Static assets
-│   ├── package.json          # Frontend dependencies
-│   ├── next.config.js        # Next.js configuration
-│   ├── tailwind.config.js    # Tailwind CSS configuration
-│   └── tsconfig.json         # TypeScript configuration
+│   ├── package.json
+│   ├── next.config.js
+│   ├── tailwind.config.js
+│   ├── tsconfig.json
+│   ├── .env.local
+│   └── README.md
 ├── backend/                   # Node.js/Express Backend
 │   ├── src/
-│   │   ├── controllers/          # Route controllers
-│   │   ├── models/               # MongoDB models
-│   │   ├── routes/               # API routes
-│   │   ├── middleware/           # Custom middleware
-│   │   ├── utils/                # Utility functions
-│   │   ├── config/               # Configuration files
-│   │   └── services/             # Service functions
-│   ├── uploads/                 # File upload directory
-│   ├── package.json             # Backend dependencies
-│   ├── server.js                # Backend server entry point
-│   └── .env                     # Backend environment variables
-├── docker-compose.yml          # Docker configuration
-├── .env.example                # Environment variables template
-└── README.md                   # Project documentation
+│   │   ├── controllers/      # Route controllers
+│   │   ├── models/           # MongoDB models
+│   │   ├── routes/           # API routes
+│   │   ├── middleware/       # Custom middleware
+│   │   ├── utils/            # Utility functions
+│   │   ├── config/           # Configuration files
+│   │   ├── services/         # Business logic services
+│   │   └── validators/       # Input validation schemas
+│   ├── uploads/              # File upload directory
+│   ├── logs/                 # Application logs
+│   ├── tests/                # Test files
+│   ├── package.json
+│   ├── server.js
+│   ├── .env
+│   ├── Dockerfile
+│   └── README.md
+├── docker-compose.yml
+├── .gitignore
+└── README.md

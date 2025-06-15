@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -16,16 +17,11 @@ import { useAuth } from "@/components/providers/auth-provider"
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Github, Chrome, AlertCircle, CheckCircle, Home } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-/**
- * Enhanced Login Page Component
- * Professional authentication with advanced features
- */
 export default function LoginPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { login, isAuthenticated, loading: authLoading } = useAuth()
 
-  // Form state
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -34,37 +30,24 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
-  const [loginAttempts, setLoginAttempts] = useState(0)
 
-  // Redirect URL after login
   const redirectTo = searchParams.get("redirect") || "/"
   const message = searchParams.get("message")
 
-  /**
-   * Redirect if already authenticated
-   */
   useEffect(() => {
     if (!authLoading && isAuthenticated) {
       router.push(redirectTo)
     }
   }, [isAuthenticated, authLoading, router, redirectTo])
 
-  /**
-   * Handle form input changes
-   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
-
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }))
     }
   }
 
-  /**
-   * Validate form data
-   */
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {}
 
@@ -84,26 +67,17 @@ export default function LoginPage() {
     return Object.keys(newErrors).length === 0
   }
 
-  /**
-   * Handle form submission
-   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
     if (!validateForm()) return
 
     setIsLoading(true)
-    setLoginAttempts((prev) => prev + 1)
-
     try {
       const success = await login(formData.email, formData.password)
-
       if (success) {
-        // Store remember me preference
         if (rememberMe) {
           localStorage.setItem("stayfinder_remember", "true")
         }
-
         router.push(redirectTo)
       } else {
         setErrors({ general: "Invalid email or password" })
@@ -116,9 +90,6 @@ export default function LoginPage() {
     }
   }
 
-  /**
-   * Demo login function
-   */
   const handleDemoLogin = async (role: "user" | "host") => {
     const demoCredentials = {
       user: { email: "demo@user.com", password: "password123" },
@@ -127,9 +98,7 @@ export default function LoginPage() {
 
     setFormData(demoCredentials[role])
     setIsLoading(true)
-
     const success = await login(demoCredentials[role].email, demoCredentials[role].password)
-
     if (success) {
       router.push(redirectTo)
     }
@@ -203,7 +172,6 @@ export default function LoginPage() {
             </CardHeader>
 
             <CardContent className="space-y-6">
-              {/* Success/Error Messages */}
               {message && (
                 <Alert>
                   <CheckCircle className="h-4 w-4" />
@@ -252,9 +220,7 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              {/* Login Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Email Field */}
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-sm font-medium">
                     Email Address
@@ -276,7 +242,6 @@ export default function LoginPage() {
                   {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
                 </div>
 
-                {/* Password Field */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <Label htmlFor="password" className="text-sm font-medium">
@@ -313,7 +278,6 @@ export default function LoginPage() {
                   {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
                 </div>
 
-                {/* Remember Me */}
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="remember"
@@ -325,7 +289,6 @@ export default function LoginPage() {
                   </Label>
                 </div>
 
-                {/* Submit Button */}
                 <Button
                   type="submit"
                   className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium h-11"
@@ -345,7 +308,6 @@ export default function LoginPage() {
                 </Button>
               </form>
 
-              {/* Social Login */}
               <div className="space-y-3">
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
@@ -367,16 +329,6 @@ export default function LoginPage() {
                   </Button>
                 </div>
               </div>
-
-              {/* Rate Limiting Warning */}
-              {loginAttempts >= 3 && (
-                <Alert>
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertDescription>
-                    Multiple failed attempts detected. Please wait a moment before trying again.
-                  </AlertDescription>
-                </Alert>
-              )}
             </CardContent>
 
             <CardFooter className="flex justify-center">

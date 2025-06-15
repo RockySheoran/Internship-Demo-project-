@@ -1,49 +1,37 @@
-# Multi-stage build for production optimization
-FROM node:18-alpine AS base
+# Use official Node.js runtime as base image
+FROM node:18-alpine
 
-# Install dependencies only when needed
-FROM base AS deps
-RUN apk add --no-cache libc6-compat
+# Set working directory
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
 
-# Development stage
-FROM base AS dev
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-EXPOSE 5000
-CMD ["npm", "run", "dev"]
+# Install dependencies
+RUN npm ci --only=production
 
-# Production stage
-FROM base AS runner
-WORKDIR /app
+# Copy source code
+COPY src/ ./src/
+
+# Create necessary directories
+RUN mkdir -p uploads logs
 
 # Create non-root user
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 stayfinder
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S stayfinder -u 1001
 
-# Copy necessary files
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+# Change ownership of app directory
+RUN chown -R stayfinder:nodejs /app
 
-# Create uploads directory
-RUN mkdir -p uploads logs
-RUN chown -R stayfinder:nodejs uploads logs
-
+# Switch to non-root user
 USER stayfinder
 
+# Expose port
 EXPOSE 5000
-
-ENV NODE_ENV=production
-ENV PORT=5000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node healthcheck.js
+  CMD curl -f http://localhost:5000/health || exit 1
 
-CMD ["npm", "start"]
+# Start the application
+CMD ["node", "src/server.js"]

@@ -63,19 +63,15 @@
   .animate-blob {
     animation: blob 7s infinite;
   }
-
   .animation-delay-2000 {
     animation-delay: 2s;
   }
-
   .animation-delay-4000 {
     animation-delay: 4s;
   }
-
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
-
   .animate-float-delayed {
     animation: float 6s ease-in-out infinite;
     animation-delay: 2s;
@@ -107,7 +103,6 @@
   }
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -123,17 +118,4 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--primary));
-}
-
-/* Focus styles */
-.focus-visible {
-  @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
-}
-
-/* Smooth transitions */
-* {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow,
-    transform, filter, backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
 }
