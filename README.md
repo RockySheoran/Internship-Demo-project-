@@ -1,5 +1,8 @@
 # 🏠 StayFinder - Accommodation Booking Platform
 
+
+
+
 A modern, full-stack accommodation booking platform built with Next.js and Node.js, similar to Airbnb.
 
 ## 🚀 Features
